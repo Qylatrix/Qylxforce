@@ -15,10 +15,10 @@ console = Console()
 
 def display_banner():
     banner_text = """
-    [bold red]Password Cracking & Credential Attack Suite[/bold red]
-    [cyan]A practical toolkit for password policy testing and security assessment.[/cyan]
+    [bold magenta]QYLATRIX OFFENSIVE SECURITY SUITE[/bold magenta]
+    [cyan]Advanced toolkit for password policy testing and security assessment.[/cyan]
     """
-    console.print(Panel.fit(banner_text, border_style="red"))
+    console.print(Panel.fit(banner_text, border_style="magenta"))
 
 def interactive_menu():
     dict_gen = DictionaryGenerator()
@@ -28,7 +28,7 @@ def interactive_menu():
     reporter = ReportGenerator()
     
     while True:
-        console.print("\n[bold yellow]--- Main Menu ---[/bold yellow]")
+        console.print("\n[bold magenta]--- Qylatrix Main Menu ---[/bold magenta]")
         console.print("1. Dictionary Generator")
         console.print("2. Password Strength Analyzer")
         console.print("3. Brute-Force Simulator")
@@ -134,7 +134,7 @@ def interactive_menu():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Password Cracking & Credential Attack Suite")
+    parser = argparse.ArgumentParser(description="Qylatrix Offensive Security Suite")
     parser.add_argument("--interactive", "-i", action="store_true", help="Launch interactive menu mode")
     args = parser.parse_args()
 

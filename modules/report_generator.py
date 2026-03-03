@@ -17,7 +17,7 @@ class ReportGenerator:
         strong_count = len(analysis_results) - weak_count
         
         report_lines = [
-            "# Password Security Audit Report",
+            "# Qylatrix Advanced Security Audit",
             f"**Date Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
             "",
             "## 1. Executive Summary",

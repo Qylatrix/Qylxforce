@@ -1,110 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Cracking & Credential Attack Suite</title>
+    <title>Qylatrix Offensive Security Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0d1117; color: #c9d1d9; }
-        .glass-panel {
-            background: rgba(22, 27, 34, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+        :root {
+            --qylatrix-black: #050505;
+            --qylatrix-dark: #0a0a0a;
+            --qylatrix-red: #ea0029;
+            --qylatrix-red-glow: rgba(234, 0, 41, 0.4);
+            --qylatrix-cyan: #00f0ff;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #1f6feb 0%, #3fb950 100%);
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--qylatrix-black);
+            color: #e0e0e0;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(234, 0, 41, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
             transition: all 0.3s ease;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(63, 185, 80, 0.4);
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--qylatrix-red), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        /* SVG Icons defined here so no emojis are used */
+
+        .glass-panel:hover {
+            border-color: rgba(234, 0, 41, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .glass-panel:hover::before {
+            opacity: 1;
+        }
+
+        .btn-qylatrix {
+            background: transparent;
+            border: 1px solid var(--qylatrix-red);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .btn-qylatrix::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(234, 0, 41, 0.2), transparent);
+            transition: all 0.4s ease;
+        }
+
+        .btn-qylatrix:hover {
+            background: rgba(234, 0, 41, 0.1);
+            box-shadow: 0 0 15px var(--qylatrix-red-glow);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-qylatrix:hover::after {
+            left: 100%;
+        }
+
+        input,
+        select,
+        textarea {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border: 1px solid #222 !important;
+            color: #fff !important;
+            transition: all 0.3s ease !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem !important;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--qylatrix-red) !important;
+            box-shadow: 0 0 10px rgba(234, 0, 41, 0.2) !important;
+            outline: none !important;
+        }
+
+        .glitch-text {
+            position: relative;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--qylatrix-black);
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 blue;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(10px, 9999px, 83px, 0);
+            }
+
+            20% {
+                clip: rect(66px, 9999px, 14px, 0);
+            }
+
+            40% {
+                clip: rect(72px, 9999px, 8px, 0);
+            }
+
+            60% {
+                clip: rect(6px, 9999px, 93px, 0);
+            }
+
+            80% {
+                clip: rect(44px, 9999px, 2px, 0);
+            }
+
+            100% {
+                clip: rect(18px, 9999px, 33px, 0);
+            }
+        }
+
+        @keyframes glitch-anim2 {
+            0% {
+                clip: rect(65px, 9999px, 100px, 0);
+            }
+
+            20% {
+                clip: rect(3px, 9999px, 40px, 0);
+            }
+
+            40% {
+                clip: rect(50px, 9999px, 15px, 0);
+            }
+
+            60% {
+                clip: rect(80px, 9999px, 60px, 0);
+            }
+
+            80% {
+                clip: rect(20px, 9999px, 90px, 0);
+            }
+
+            100% {
+                clip: rect(40px, 9999px, 10px, 0);
+            }
+        }
+
+        /* Terminal Output Style */
+        .terminal-output {
+            background: #000;
+            border-left: 2px solid var(--qylatrix-red);
+            font-family: 'JetBrains Mono', monospace;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .terminal-output::before {
+            content: '>_';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
     </style>
 </head>
-<body class="min-h-screen p-8">
-    <div class="max-w-6xl mx-auto space-y-8">
-        
-        <header class="text-center py-10">
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 mb-4">
-                Password Cracking & Credential Attack Suite
-            </h1>
-            <p class="text-gray-400 text-lg">A professional toolkit for password policy testing and security assessment.</p>
+
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-12">
+
+        <!-- Navbar / Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center py-6 border-b border-gray-800">
+            <div class="flex items-center space-x-3">
+                <!-- Abstract Q Logo -->
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10ZM50 82C32.3269 82 18 67.6731 18 50C18 32.3269 32.3269 18 50 18C67.6731 18 82 32.3269 82 50C82 67.6731 67.6731 82 50 82Z"
+                        fill="#ea0029" />
+                    <path d="M75 75L95 95" stroke="#ea0029" stroke-width="8" stroke-linecap="square" />
+                    <rect x="40" y="40" width="20" height="20" fill="#ea0029" />
+                </svg>
+                <h1 class="text-3xl font-bold tracking-wider uppercase text-white" style="letter-spacing: 2px;">
+                    Qylatrix
+                </h1>
+            </div>
+            <div class="text-xs font-mono text-gray-500 tracking-widest uppercase mt-4 md:mt-0">
+                Offensive Security Suite v2.0 // INTERNAL USE ONLY
+            </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
             <!-- Dictionary Generator -->
-            <div class="glass-panel p-6">
-                <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    Dictionary Generator
-                </h2>
-                <div class="space-y-4">
-                    <input type="text" id="dict-words" placeholder="Enter base words (comma separated)" class="w-full bg-gray-800 border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none">
-                    <button onclick="generateDict()" class="w-full btn-primary text-white font-bold py-3 rounded-lg shadow-lg">Generate Wordlist</button>
-                    <div id="dict-result" class="hidden mt-4 p-4 bg-gray-900 rounded-lg text-sm font-mono text-green-400 border border-gray-700"></div>
+            <div class="glass-panel p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Dictionary Forge</h2>
+                    <span class="text-xs font-mono text-[#ea0029] border border-[#ea0029] px-2 py-1">MODULE 01</span>
+                </div>
+                <div class="space-y-5">
+                    <input type="text" id="dict-words" placeholder="Target basis (comma separated)"
+                        class="w-full rounded p-3 text-white">
+                    <button onclick="generateDict()" class="w-full btn-qylatrix py-3 rounded">Synthesize Logic</button>
+                    <div id="dict-result" class="hidden mt-4 terminal-output text-sm text-[#00f0ff]"></div>
                 </div>
             </div>
 
             <!-- Strength Analyzer -->
-            <div class="glass-panel p-6">
-                <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    Strength Analyzer
-                </h2>
-                <div class="space-y-4">
-                    <input type="password" id="analyze-pwd" placeholder="Enter password to analyze" class="w-full bg-gray-800 border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none">
-                    <button onclick="analyzePwd()" class="w-full btn-primary text-white font-bold py-3 rounded-lg shadow-lg">Analyze Security</button>
-                    <div id="analyze-result" class="hidden mt-4 space-y-2 p-4 bg-gray-900 rounded-lg text-sm border border-gray-700"></div>
+            <div class="glass-panel p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Entropy Analyzer</h2>
+                    <span class="text-xs font-mono text-[#ea0029] border border-[#ea0029] px-2 py-1">MODULE 02</span>
+                </div>
+                <div class="space-y-5">
+                    <input type="password" id="analyze-pwd" placeholder="Input string for entropy evaluation"
+                        class="w-full rounded p-3 text-white">
+                    <button onclick="analyzePwd()" class="w-full btn-qylatrix py-3 rounded">Evaluate Hardness</button>
+                    <div id="analyze-result" class="hidden mt-4 space-y-3 terminal-output text-sm"></div>
                 </div>
             </div>
 
             <!-- Brute Force Simulator -->
-            <div class="glass-panel p-6">
-                <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    Brute-Force Estimates
-                </h2>
-                <div class="space-y-4">
-                    <input type="text" id="brute-pwd" placeholder="Sample password for estimation" class="w-full bg-gray-800 border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none">
-                    <button onclick="simulateBruteForce()" class="w-full btn-primary text-white font-bold py-3 rounded-lg shadow-lg">Estimate Crack Time</button>
-                    <div id="brute-result" class="hidden mt-4 p-4 bg-gray-900 rounded-lg text-sm text-yellow-400 font-mono border border-gray-700"></div>
+            <div class="glass-panel p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Brute-Force Matrices</h2>
+                    <span class="text-xs font-mono text-[#ea0029] border border-[#ea0029] px-2 py-1">MODULE 03</span>
+                </div>
+                <div class="space-y-5">
+                    <input type="text" id="brute-pwd" placeholder="Hypothetical password structure"
+                        class="w-full rounded p-3 text-white">
+                    <button onclick="simulateBruteForce()" class="w-full btn-qylatrix py-3 rounded">Compute TTK</button>
+                    <div id="brute-result" class="hidden mt-4 terminal-output text-sm text-yellow-500"></div>
                 </div>
             </div>
 
             <!-- Hash Extractor Sim -->
-            <div class="glass-panel p-6">
-                <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
-                    Hash Extraction Demo
-                </h2>
-                <div class="space-y-4">
-                    <select id="os-type" class="w-full bg-gray-800 border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none">
-                        <option value="linux">Linux (/etc/shadow)</option>
-                        <option value="windows">Windows (SAM Dump)</option>
+            <div class="glass-panel p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Hive Extraction</h2>
+                    <span class="text-xs font-mono text-[#ea0029] border border-[#ea0029] px-2 py-1">MODULE 04</span>
+                </div>
+                <div class="space-y-5">
+                    <select id="os-type" class="w-full rounded p-3 text-white">
+                        <option value="linux">UNIX (/etc/shadow bypass)</option>
+                        <option value="windows">WIN (SAM/SYSTEM hive dump)</option>
                     </select>
-                    <button onclick="extractHashes()" class="w-full btn-primary text-white font-bold py-3 rounded-lg shadow-lg">Extract offline</button>
-                    <div id="extract-result" class="hidden mt-4 p-4 bg-gray-900 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 overflow-x-auto whitespace-pre"></div>
+                    <button onclick="extractHashes()" class="w-full btn-qylatrix py-3 rounded">Initiate
+                        Extraction</button>
+                    <div id="extract-result"
+                        class="hidden mt-4 terminal-output text-xs text-gray-400 overflow-x-auto whitespace-pre"></div>
                 </div>
             </div>
-            
+
             <!-- Report Generator -->
-            <div class="glass-panel p-6 md:col-span-2">
-                <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    <svg class="w-6 h-6 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Audit Report Generator
-                </h2>
-                <div class="space-y-4">
-                    <textarea id="report-pwds" rows="3" placeholder="Enter passwords to audit (one per line)" class="w-full bg-gray-800 border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none font-mono"></textarea>
-                    <button onclick="generateReport()" class="w-full btn-primary text-white font-bold py-3 rounded-lg shadow-lg">Generate Full Security Report</button>
-                    <div id="report-result" class="hidden mt-4 p-6 bg-gray-900 rounded-lg text-sm text-gray-300 border border-gray-700 prose prose-invert max-w-none"></div>
+            <div class="glass-panel p-8 lg:col-span-2 border-t-4 border-t-[#ea0029]">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold uppercase tracking-wider text-white">Qylatrix Audit Report Generation
+                    </h2>
+                    <span class="text-xs font-mono text-[#ea0029] border border-[#ea0029] px-2 py-1">FINAL PHASE</span>
+                </div>
+                <div class="space-y-5">
+                    <textarea id="report-pwds" rows="4" placeholder="Input target payload strings (line separated)..."
+                        class="w-full rounded p-3 text-white"></textarea>
+                    <button onclick="generateReport()"
+                        class="w-full bg-[#ea0029] hover:bg-red-700 text-white font-bold py-4 rounded transition-colors uppercase tracking-widest">Generate
+                        Executive Brief</button>
+                    <div id="report-result"
+                        class="hidden mt-6 p-8 bg-[#050505] rounded text-sm text-gray-300 border border-gray-800 prose prose-invert max-w-none font-mono">
+                    </div>
                 </div>
             </div>
 
         </div>
+
+        <footer class="text-center py-8 text-xs font-mono text-gray-600 uppercase border-t border-gray-900">
+            &copy; 2026 Qylatrix Industries. Authorized personnel only. All access logged.
+        </footer>
     </div>
 
     <!-- Scripts -->
@@ -120,72 +342,79 @@
 
         async function generateDict() {
             const words = document.getElementById('dict-words').value.split(',').map(w => w.trim()).filter(Boolean);
-            if(words.length === 0) return;
-            const res = await fetchAPI('/api/generate_dict', {words});
+            if (words.length === 0) return;
+            const res = await fetchAPI('/api/generate_dict', { words });
             const div = document.getElementById('dict-result');
-            div.textContent = `Generated ${res.count} permutations successfully. Saved to ${res.file}`;
+            div.innerHTML = `> Executing mutation algorithms...<br>> ${res.count} permutations mapped.<br>> Output routed to: <span class="text-white">${res.file}</span>`;
             div.classList.remove('hidden');
         }
 
         async function analyzePwd() {
             const password = document.getElementById('analyze-pwd').value;
-            if(!password) return;
-            const data = await fetchAPI('/api/analyze', {password});
+            if (!password) return;
+            const data = await fetchAPI('/api/analyze', { password });
             const div = document.getElementById('analyze-result');
-            let recs = data.recommendations.map(r => `<li>${r}</li>`).join('');
+            let recs = data.recommendations.map(r => `<li>[-] ${r}</li>`).join('');
+
+            let color = data.result.score > 2 ? 'text-[#00f0ff]' : 'text-[#ea0029]';
+
             div.innerHTML = `
-                <div class="flex justify-between border-b border-gray-700 pb-2">
-                    <span class="text-gray-400">Score:</span>
-                    <span class="${data.result.score > 2 ? 'text-green-400' : 'text-red-400'} font-bold">${data.result.score} / 4</span>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-500">THREAT SCORE:</span>
+                    <span class="${color} font-bold">[ ${data.result.score} / 4 ]</span>
                 </div>
-                <div class="flex justify-between border-b border-gray-700 py-2">
-                    <span class="text-gray-400">Entropy:</span>
+                <div class="flex justify-between border-b border-gray-800 py-2">
+                    <span class="text-gray-500">ENTROPY VALUE:</span>
                     <span class="text-white">${data.result.math_entropy_bits.toFixed(1)} bits</span>
                 </div>
                 <div class="flex justify-between py-2">
-                    <span class="text-gray-400">Est. Crack Time:</span>
+                    <span class="text-gray-500">EST. COMPROMISE TIME:</span>
                     <span class="text-white">${data.result.crack_times_display.offline_fast_hashing_1e10_per_second || 'Unknown'}</span>
                 </div>
-                ${recs ? `<div class="mt-2 text-yellow-400"><ul class="list-disc pl-5">${recs}</ul></div>` : ''}
+                ${recs ? `<div class="mt-4 text-gray-400 border-t border-gray-800 pt-2 font-mono text-xs">VULNERABILITY PATCH NOTES:<ul class="mt-2 space-y-1">${recs}</ul></div>` : ''}
             `;
             div.classList.remove('hidden');
         }
 
         async function simulateBruteForce() {
             const password = document.getElementById('brute-pwd').value;
-            if(!password) return;
-            const data = await fetchAPI('/api/brute_force', {password, hash_type: 'ntlm'});
+            if (!password) return;
+            const data = await fetchAPI('/api/brute_force', { password, hash_type: 'ntlm' });
             const div = document.getElementById('brute-result');
-            div.innerHTML = `Combinations: ${data.combinations.toLocaleString()}<br>Hash Rate: ${data.assumed_hash_rate.toLocaleString()} H/s<br><br>Estimated Time to crack:<br><span class="text-red-400 text-lg">${data.formatted_time}</span>`;
+            div.innerHTML = `> Matrix size: ${data.combinations.toLocaleString()}<br>> Hardware acceleration: ${data.assumed_hash_rate.toLocaleString()} H/s (ASIC Array)<br>> TIME-TO-CRACK (TTC): <span class="text-[#ea0029] font-bold text-lg">${data.formatted_time}</span>`;
             div.classList.remove('hidden');
         }
 
         async function extractHashes() {
             const os_type = document.getElementById('os-type').value;
-            const data = await fetchAPI('/api/extract', {os_type});
+            const data = await fetchAPI('/api/extract', { os_type });
             const div = document.getElementById('extract-result');
-            div.textContent = `[+] Mock Extraction Completed.\n\n` + JSON.stringify(data.accounts, null, 2);
+            div.textContent = `> Bypassing Kernel protections...\n> Dumping memory hives...\n\n` + JSON.stringify(data.accounts, null, 2);
             div.classList.remove('hidden');
         }
 
         async function generateReport() {
             const lines = document.getElementById('report-pwds').value.split('\n').map(w => w.trim()).filter(Boolean);
-            if(lines.length === 0) return;
-            const data = await fetchAPI('/api/report', {passwords: lines});
+            if (lines.length === 0) return;
+            const data = await fetchAPI('/api/report', { passwords: lines });
             const div = document.getElementById('report-result');
-            
-            // Simple markdown parser for demo display
+
             let html = data.markdown
-                .replace(/^# (.*)/gm, '<h1 class="text-2xl font-bold mb-4">$1</h1>')
-                .replace(/^## (.*)/gm, '<h2 class="text-xl font-semibold mt-6 mb-2 text-white">$1</h2>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/`(.*?)`/g, '<code class="bg-gray-800 text-green-400 px-1 rounded">$1</code>')
+                .replace(/^# (.*)/gm, '<h1 class="text-2xl font-bold mb-6 text-white uppercase border-b border-[#ea0029] pb-2">$1</h1>')
+                .replace(/^## (.*)/gm, '<h2 class="text-lg font-bold mt-8 mb-4 text-[#ea0029] uppercase tracking-widest">$1</h2>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
+                .replace(/`(.*?)`/g, '<code class="bg-gray-900 border border-gray-800 text-[#00f0ff] px-1 rounded">$1</code>')
                 .replace(/\n\n/g, '<br><br>')
-                .replace(/^- (.*)/gm, '<li class="ml-4">$1</li>');
+                .replace(/^- (.*)/gm, '<li class="ml-4 text-gray-400 mb-1">$1</li>')
+                .replace(/\|(.*)\|/g, function (match) {
+                    // Simple table formatting
+                    return `<div class="py-1 border-b border-gray-800 text-xs">${match.replace(/\|/g, '<span class="mx-2 text-gray-700">|</span>')}</div>`;
+                });
 
             div.innerHTML = html;
             div.classList.remove('hidden');
         }
     </script>
 </body>
+
 </html>
