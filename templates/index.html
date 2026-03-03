@@ -226,48 +226,11 @@
         <header class="flex flex-col md:flex-row justify-between items-center py-6 border-b border-slate-800">
             <div class="flex items-center space-x-4">
                 <!-- Authentic Qylatrix Logo -->
-                <svg width="65" height="65" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    class="flex-shrink-0">
-                    <defs>
-                        <linearGradient id="hexGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#00f0ff" />
-                            <stop offset="100%" stop-color="#0055ff" />
-                        </linearGradient>
-                        <filter id="glowHex" x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                            <feMerge>
-                                <feMergeNode in="coloredBlur" />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                        </filter>
-                    </defs>
-
-                    <!-- Left Hexagon half -->
-                    <path d="M50 5 L10 28 L10 72 L50 95" stroke="url(#hexGrad)" stroke-width="4.5"
-                        stroke-linejoin="round" stroke-linecap="round" fill="none" filter="url(#glowHex)" />
-
-                    <!-- Top Right Hexagon Line -->
-                    <path d="M50 5 L90 28 L90 40" stroke="#00f0ff" stroke-width="4.5" stroke-linejoin="round"
-                        stroke-linecap="round" fill="none" filter="url(#glowHex)" />
-
-                    <!-- Bottom Right Hexagon Line -->
-                    <path d="M50 95 L90 72 L90 85" stroke="#0055ff" stroke-width="4.5" stroke-linejoin="round"
-                        stroke-linecap="round" fill="none" filter="url(#glowHex)" />
-
-                    <!-- Magnifying Glass Circle -->
-                    <circle cx="42" cy="42" r="16" stroke="#ffffff" stroke-width="6" fill="none" />
-                    <!-- Center Glow Point -->
-                    <circle cx="42" cy="42" r="3.5" fill="#00f0ff" filter="url(#glowHex)" />
-
-                    <!-- Magnifying Handle & Traces -->
-                    <path d="M42 42 L65 65" stroke="#00f0ff" stroke-width="3.5" stroke-linecap="round" />
-
-                    <path d="M50 62 L75 87 L82 87" stroke="#00f0ff" stroke-width="3" stroke-linecap="round"
-                        stroke-linejoin="round" />
-
-                    <path d="M62 50 L87 75 L94 75" stroke="#0055ff" stroke-width="3" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
+                <!-- Exact Authentic Qylatrix Logo from User Image -->
+                <div class="flex-shrink-0 relative group">
+                    <img src="/static/logo.png" alt="Qylatrix Logo"
+                        class="h-16 w-auto object-contain drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]">
+                </div>
                 <div class="flex flex-col ml-4 justify-center">
                     <h1 class="text-4xl font-extrabold tracking-widest uppercase text-white"
                         style="letter-spacing: 5px; text-shadow: -2px 0px 0px #00f0ff, 2px 0px 0px #ff3300;">
