@@ -85,25 +85,48 @@
             animation: fadeDown 0.8s ease;
         }
 
+        /* ── Premium nav logo: SVG mark + wordmark ─── */
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             text-decoration: none;
         }
 
-        /* qylxforce tool logo */
-        .logo-img {
-            height: 44px;
-            width: auto;
-            object-fit: contain;
-            mix-blend-mode: screen;
-            filter: drop-shadow(0 0 8px rgba(0, 220, 255, 0.5));
+        .nav-logo svg {
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 6px rgba(0, 230, 255, 0.5));
             transition: filter 0.3s ease;
         }
 
-        .nav-logo:hover .logo-img {
-            filter: drop-shadow(0 0 14px rgba(0, 220, 255, 0.9)) drop-shadow(0 0 26px rgba(0, 150, 255, 0.5));
+        .nav-logo:hover svg {
+            filter: drop-shadow(0 0 14px rgba(0, 230, 255, 0.9)) drop-shadow(0 0 24px rgba(0, 140, 255, 0.6));
+        }
+
+        .nav-wordmark {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .nav-wordmark-main {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            background: linear-gradient(90deg, #fff 0%, #a0d8ff 60%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-wordmark-sub {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            letter-spacing: 0.25em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 2px;
         }
 
         /* 'by QYLATRIX' credit */
@@ -112,7 +135,7 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
-            opacity: 0.7;
+            opacity: 0.65;
             transition: opacity 0.3s ease;
         }
 
@@ -122,17 +145,17 @@
 
         .brand-by {
             font-family: var(--font-mono);
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         .qylatrix-logo {
-            height: 32px;
+            height: 30px;
             width: auto;
             mix-blend-mode: screen;
-            filter: drop-shadow(0 0 6px rgba(0, 200, 255, 0.4));
+            filter: drop-shadow(0 0 5px rgba(0, 200, 255, 0.35));
         }
 
         .nav-badge {
@@ -736,10 +759,30 @@
         <!-- ═══ Navbar ═══════════════════════════════════════════════ -->
         <nav>
             <!-- Tool logo + name -->
+            <!-- qylxforce icon mark + wordmark -->
             <a class="nav-logo" href="#">
-                <img src="/static/qylxforce_logo.png" alt="qylxforce" class="logo-img">
+                <!-- Geometric Q+X monogram SVG -->
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Outer hexagon -->
+                    <polygon points="18,2 32,10 32,26 18,34 4,26 4,10" stroke="#00e5ff" stroke-width="1.8" fill="none"
+                        opacity="0.9" />
+                    <!-- Q ring -->
+                    <circle cx="18" cy="17" r="7" stroke="#00e5ff" stroke-width="1.6" fill="none" />
+                    <!-- Q tail -->
+                    <line x1="23" y1="22" x2="27" y2="27" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" />
+                    <!-- X cross -->
+                    <line x1="14" y1="13" x2="22" y2="21" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"
+                        opacity="0.5" />
+                    <line x1="22" y1="13" x2="14" y2="21" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"
+                        opacity="0.5" />
+                </svg>
+                <!-- Wordmark -->
+                <div class="nav-wordmark">
+                    <span class="nav-wordmark-main">qylxforce</span>
+                    <span class="nav-wordmark-sub">by qylatrix</span>
+                </div>
             </a>
-            <!-- Right side: badge + by Qylatrix -->
+            <!-- Right side: version badge + Qylatrix brand logo -->
             <div style="display:flex;align-items:center;gap:20px;">
                 <span class="nav-badge">OFFENSIVE SUITE v2.0</span>
                 <a class="nav-brand-credit" href="https://github.com/Qylatrix" target="_blank">
