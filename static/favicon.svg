@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#020810" rx="12"/>
+  <!-- Outer hexagon -->
+  <polygon points="32,4 56,18 56,46 32,60 8,46 8,18"
+    stroke="#00e5ff" stroke-width="3" fill="none" opacity="0.95"/>
+  <!-- Glow hex -->
+  <polygon points="32,4 56,18 56,46 32,60 8,46 8,18"
+    stroke="#00e5ff" stroke-width="6" fill="none" opacity="0.15"/>
+  <!-- Q circle -->
+  <circle cx="32" cy="30" r="12" stroke="#00e5ff" stroke-width="2.8" fill="none"/>
+  <!-- Q tail -->
+  <line x1="41" y1="39" x2="48" y2="47" stroke="#00e5ff" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- X cross (subtle) -->
+  <line x1="26" y1="24" x2="38" y2="36" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+  <line x1="38" y1="24" x2="26" y2="36" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+</svg>

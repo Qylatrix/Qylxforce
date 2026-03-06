@@ -1,64 +1,62 @@
-# qylxforce — Qylatrix Offensive Credential Suite
+<div align="center">
 
-> **The Syntax of Safety** | A premium credential security assessment toolkit for ethical security research.
+<img src="static/qylxforce_logo.png" height="80"/>
+
+# QYLXFORCE
+### Offensive Credential Suite
+**by [Qylatrix Industries](https://github.com/Qylatrix)**
+
+🌐 **Live Site:** [qylxforce.pythonanywhere.com](https://qylxforce.pythonanywhere.com)
 
 ---
 
-## 🛡️ What is qylxforce?
+</div>
 
-**qylxforce** is a unique, Kali Linux–native offensive credential suite built by Qylatrix Industries. It combines password policy testing, entropy analysis, brute-force modelling, hash extraction simulation, and executive reporting into a single professional-grade toolkit.
+## ⚡ Install on Kali Linux
 
----
-
-## 🔧 Installation on Kali Linux
-
-### One-line install (recommended)
-
+### One-line install
 ```bash
 curl -sSL https://raw.githubusercontent.com/Qylatrix/qylatrix-offensive-suite/main/install.sh | sudo bash
 ```
+That's it. After install the **browser opens the live site automatically.**
 
 ### Manual install
-
 ```bash
-git clone https://github.com/Qylatrix/qylatrix-offensive-suite
+git clone https://github.com/Qylatrix/qylatrix-offensive-suite.git
 cd qylatrix-offensive-suite
 sudo bash install.sh
 ```
 
-After installation, run anywhere:
-
-```bash
-qylxforce
-```
-
 ---
 
-## 🚀 Usage
+## 🚀 How to Use
 
-| Command | Description |
+After installing, run from any terminal:
+
+| Command | What it does |
 |---|---|
-| `qylxforce web` | Launch premium web UI at `http://localhost:5000` |
-| `qylxforce dict` | Dictionary generator — wordlist synthesis |
-| `qylxforce analyze` | Entropy analyzer — password strength audit |
+| `qylxforce` | Show banner + all commands |
+| `qylxforce web` | Run the full web UI locally at `localhost:5000` |
+| `qylxforce online` | Open the live site in browser |
+| `qylxforce dict` | Dictionary / wordlist generator |
+| `qylxforce analyze` | Password entropy analyzer |
 | `qylxforce brute` | Brute-force time estimator |
-| `qylxforce extract` | Credential hash extractor (shadow / SAM) |
-| `qylxforce report` | Executive audit report generator |
+| `qylxforce extract` | Hash extractor (Linux shadow / Windows SAM) |
+| `qylxforce report` | Generate executive audit report |
 
 ### Examples
-
 ```bash
-# Launch the full web interface
+# Launch full web interface
 qylxforce web
 
-# Analyze a password from terminal
+# Analyze a password
 qylxforce analyze --password 'Admin@2024!'
 
-# Generate a wordlist from base words
+# Generate wordlist
 qylxforce dict --words alice,company,winter2024
 
-# Generate executive audit report
-qylxforce report --file passwords.txt
+# Open live site
+qylxforce online
 ```
 
 ---
@@ -68,29 +66,31 @@ qylxforce report --file passwords.txt
 | # | Module | Description |
 |---|---|---|
 | 01 | **Dictionary Forge** | L33tspeak, CamelCase, digit-suffix mutations |
-| 02 | **Entropy Analyzer** | Shannon entropy, zxcvbn score, crack-time estimation |
+| 02 | **Entropy Analyzer** | Shannon entropy, zxcvbn score, crack time |
 | 03 | **Brute-Force Matrix** | ASIC/GPU attack surface modelling |
 | 04 | **Hive Extraction** | Linux shadow / Windows SAM dump simulation |
-| 05 | **Audit Report** | Executive security brief with remediation guidance |
+| 05 | **Audit Report** | Executive security brief + remediation guide |
 
 ---
 
-## 📋 Requirements
+## 🔧 Requirements
 
 - Kali Linux 2023+ / Debian 11+ / Ubuntu 22+
 - Python 3.10+
-- Internet connection (for install)
+- Internet connection for install
 
 ---
 
 ## ⚠️ Disclaimer
 
-This tool is for **educational and authorized security testing purposes only**. Unauthorized use against systems you do not own or have explicit permission to test is illegal. The authors assume no liability.
+For **educational and authorized security testing only**. Unauthorized use is illegal. Authors assume no liability.
 
 ---
 
-## 🔗 Links
+<div align="center">
 
-- GitHub: [Qylatrix/qylatrix-offensive-suite](https://github.com/Qylatrix/qylatrix-offensive-suite)
-- Author: Qylatrix Industries
-- License: MIT
+**QYLXFORCE** · by Qylatrix Industries · *The Syntax of Safety*
+
+[GitHub](https://github.com/Qylatrix) · [Live Site](https://qylxforce.pythonanywhere.com)
+
+</div>
