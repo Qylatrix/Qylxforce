@@ -10,7 +10,7 @@ set -e
 # ── Configuration ─────────────────────────────────────────────────
 TOOL_NAME="qylxforce"
 REPO="https://github.com/Qylatrix/qylatrix-offensive-suite"
-LIVE_URL="https://qylatrix.pythonanywhere.com"   # ← your live site
+LIVE_URL="https://qylxforce.pythonanywhere.com"   # live site
 INSTALL_DIR="/opt/$TOOL_NAME"
 BIN_LINK="/usr/local/bin/$TOOL_NAME"
 
