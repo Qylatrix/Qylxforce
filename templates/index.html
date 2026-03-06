@@ -4,338 +4,1062 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qylatrix | The Syntax of Safety</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Qylatrix | Password Cracking Suite</title>
+    <meta name="description"
+        content="Qylatrix Offensive Security Suite — A premium toolkit for password policy testing, entropy analysis, and credential security assessment.">
+
+    <!-- Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
+
     <style>
+        /* ─── CSS Variables & Reset ─────────────────────────── */
         :root {
-            --qylatrix-black: #030712;
-            --qylatrix-dark: #0f172a;
-            --qylatrix-primary: #0077ff;
-            --qylatrix-primary-glow: rgba(0, 119, 255, 0.4);
-            --qylatrix-cyan: #00f0ff;
+            --bg-primary: #020810;
+            --bg-secondary: #060d1a;
+            --bg-card: rgba(8, 18, 38, 0.75);
+            --border: rgba(0, 200, 255, 0.12);
+            --border-hover: rgba(0, 200, 255, 0.45);
+            --accent-blue: #0080ff;
+            --accent-cyan: #00c8ff;
+            --accent-purple: #7b2fff;
+            --accent-pink: #ff2d78;
+            --accent-green: #00ff9d;
+            --text-primary: #e8f0ff;
+            --text-secondary: #7a9bc8;
+            --text-muted: #3a5a8a;
+            --glow-blue: rgba(0, 128, 255, 0.35);
+            --glow-cyan: rgba(0, 200, 255, 0.25);
+            --glow-purple: rgba(123, 47, 255, 0.35);
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Space Grotesk', sans-serif;
-            background-color: var(--qylatrix-black);
-            color: #e0e0e0;
-            background-image:
-                radial-gradient(circle at 15% 50%, rgba(0, 119, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace;
+        /* ─── Animated Canvas Background ───────────────────── */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* ─── Layout ─────────────────────────────────────────── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ─── Navbar ─────────────────────────────────────────── */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0 20px;
+            border-bottom: 1px solid var(--border);
+            animation: fadeDown 0.8s ease;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            box-shadow: 0 0 20px var(--glow-blue);
+            letter-spacing: -1px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-badge {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            padding: 4px 10px;
             border-radius: 4px;
+            letter-spacing: 2px;
+            background: rgba(0, 200, 255, 0.05);
+        }
+
+        /* ─── Hero Section ───────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+            animation: fadeUp 1s ease 0.3s both;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent-cyan);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4.2rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 22px;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 40%, var(--accent-purple) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+        }
+
+        /* Typing cursor animation */
+        .typing-container {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--accent-cyan);
+            height: 22px;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ─── Stat Row ───────────────────────────────────────── */
+        .stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+            animation: fadeUp 1s ease 0.5s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ─── Module Grid ────────────────────────────────────── */
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::before,
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        /* ─── Glass Card ─────────────────────────────────────── */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            animation: fadeUp 0.8s ease both;
         }
 
-        .glass-panel::before {
+        .card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .card:nth-child(5) {
+            animation-delay: 0.2s;
+        }
+
+        .card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--qylatrix-cyan), transparent);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-purple), transparent);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
-        .glass-panel:hover {
-            border-color: rgba(0, 240, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transform: translateY(-2px);
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 200, 255, 0.06) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .glass-panel:hover::before {
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow:
+                0 0 40px rgba(0, 200, 255, 0.08),
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(0, 200, 255, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .card:hover::before {
             opacity: 1;
         }
 
-        .btn-qylatrix {
-            background: transparent;
-            border: 1px solid var(--qylatrix-primary);
-            color: white;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+            border-color: rgba(0, 128, 255, 0.2);
+            background: linear-gradient(135deg, rgba(0, 10, 30, 0.85), rgba(0, 5, 20, 0.9));
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .module-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+            padding: 5px 12px;
+            border-radius: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
         }
 
-        .btn-qylatrix::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .badge-blue {
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            background: rgba(0, 200, 255, 0.08);
+        }
+
+        .badge-purple {
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            background: rgba(123, 47, 255, 0.08);
+        }
+
+        .badge-green {
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            background: rgba(0, 255, 157, 0.08);
+        }
+
+        .badge-pink {
+            color: var(--accent-pink);
+            border: 1px solid var(--accent-pink);
+            background: rgba(255, 45, 120, 0.08);
+        }
+
+        .badge-gold {
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .icon-blue {
+            background: rgba(0, 128, 255, 0.15);
+        }
+
+        .icon-purple {
+            background: rgba(123, 47, 255, 0.15);
+        }
+
+        .icon-green {
+            background: rgba(0, 255, 157, 0.15);
+        }
+
+        .icon-pink {
+            background: rgba(255, 45, 120, 0.15);
+        }
+
+        .icon-gold {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+        }
+
+        .card p.desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        /* ─── Inputs ─────────────────────────────────────────── */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
-            transition: all 0.4s ease;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 200, 255, 0.15);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-appearance: none;
         }
 
-        .btn-qylatrix:hover {
-            background: rgba(0, 119, 255, 0.1);
-            box-shadow: 0 0 15px var(--qylatrix-primary-glow);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-            border-color: var(--qylatrix-cyan);
-        }
-
-        .btn-qylatrix:hover::after {
-            left: 100%;
-        }
-
-        input,
-        select,
-        textarea {
-            background: rgba(0, 0, 0, 0.5) !important;
-            border: 1px solid #1e293b !important;
-            color: #fff !important;
-            transition: all 0.3s ease !important;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem !important;
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-muted);
         }
 
         input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--qylatrix-cyan) !important;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2) !important;
-            outline: none !important;
+        textarea:focus,
+        select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.1);
         }
 
-        .glitch-text {
+        select option {
+            background: #060d1a;
+            color: var(--text-primary);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        /* ─── Buttons ────────────────────────────────────────── */
+        .btn {
             position: relative;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
+        .btn-cyan {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .btn-cyan::before {
+            content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -110%;
             width: 100%;
             height: 100%;
-            background: var(--qylatrix-black);
+            background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.2), transparent);
+            transition: left 0.5s ease;
         }
 
-        .glitch-text::before {
-            left: 2px;
-            text-shadow: -1px 0 var(--qylatrix-cyan);
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
+        .btn-cyan:hover::before {
+            left: 110%;
         }
 
-        .glitch-text::after {
-            left: -2px;
-            text-shadow: -1px 0 var(--qylatrix-primary);
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        .btn-cyan:hover {
+            background: rgba(0, 200, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3), 0 4px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-1px);
         }
 
-        @keyframes glitch-anim {
-            0% {
-                clip: rect(10px, 9999px, 83px, 0);
-            }
-
-            20% {
-                clip: rect(66px, 9999px, 14px, 0);
-            }
-
-            40% {
-                clip: rect(72px, 9999px, 8px, 0);
-            }
-
-            60% {
-                clip: rect(6px, 9999px, 93px, 0);
-            }
-
-            80% {
-                clip: rect(44px, 9999px, 2px, 0);
-            }
-
-            100% {
-                clip: rect(18px, 9999px, 33px, 0);
-            }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #fff;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            font-size: 14px;
+            padding: 16px 24px;
         }
 
-        @keyframes glitch-anim2 {
-            0% {
-                clip: rect(65px, 9999px, 100px, 0);
-            }
+        .btn-primary:hover {
+            box-shadow: 0 0 30px var(--glow-blue), 0 0 60px var(--glow-purple), 0 8px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+            filter: brightness(1.15);
+        }
 
-            20% {
-                clip: rect(3px, 9999px, 40px, 0);
-            }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
 
-            40% {
-                clip: rect(50px, 9999px, 15px, 0);
-            }
+        /* spinner inside btn */
+        .btn .spin {
+            display: none;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
 
-            60% {
-                clip: rect(80px, 9999px, 60px, 0);
-            }
+        .btn.loading .btn-label {
+            display: none;
+        }
 
-            80% {
-                clip: rect(20px, 9999px, 90px, 0);
-            }
+        .btn.loading .spin {
+            display: block;
+        }
 
-            100% {
-                clip: rect(40px, 9999px, 10px, 0);
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
         }
 
-        /* Terminal Output Style */
-        .terminal-output {
-            background: #020617;
-            border-left: 2px solid var(--qylatrix-cyan);
-            font-family: 'JetBrains Mono', monospace;
-            padding: 1rem;
+        /* ─── Terminal Output ────────────────────────────────── */
+        .terminal {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 200, 255, 0.12);
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            color: var(--accent-cyan);
             position: relative;
+            overflow: hidden;
+            display: none;
+            animation: termSlide 0.4s ease;
         }
 
-        .terminal-output::before {
+        .terminal.purple {
+            border-left-color: var(--accent-purple);
+            color: #c8a8ff;
+        }
+
+        .terminal.green {
+            border-left-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .terminal.white {
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .terminal::after {
             content: '>_';
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            color: rgba(255, 255, 255, 0.2);
-            font-weight: bold;
+            top: 8px;
+            right: 12px;
+            color: rgba(0, 200, 255, 0.2);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        @keyframes termSlide {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* score bar */
+        .score-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* ─── Footer ─────────────────────────────────────────── */
+        footer {
+            text-align: center;
+            padding: 40px 0 32px;
+            margin-top: 80px;
+            border-top: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ─── Animations ─────────────────────────────────────── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── Scrollbar ──────────────────────────────────────── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 200, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 200, 255, 0.4);
+        }
+
+        /* ─── Responsive ─────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-row {
+                gap: 28px;
+            }
         }
     </style>
 </head>
 
-<body class="p-4 md:p-8">
-    <div class="max-w-7xl mx-auto space-y-12">
+<body>
 
-        <!-- Navbar / Header -->
-        <header class="flex flex-col md:flex-row justify-between items-center py-6 border-b border-slate-800">
-            <div class="flex items-center space-x-4">
-                <!-- Authentic Qylatrix Logo -->
-                <!-- Exact Authentic Qylatrix Logo from User Image -->
-                <div class="flex-shrink-0 flex items-center h-20 group">
-                    <img src="/static/logo.png" alt="Qylatrix Logo"
-                        class="h-28 w-auto object-contain mix-blend-screen ml-[-1rem]">
-                </div>
+    <!-- ═══ Background Canvas ═══════════════════════════════════════ -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="page-wrap">
+
+        <!-- ═══ Navbar ═══════════════════════════════════════════════ -->
+        <nav>
+            <a class="nav-logo" href="#">
+                <div class="logo-icon">Q</div>
+                <span class="logo-text">QYLATRIX</span>
+            </a>
+            <span class="nav-badge">OFFENSIVE SUITE v2.0</span>
+        </nav>
+
+        <!-- ═══ Hero ═════════════════════════════════════════════════ -->
+        <section class="hero">
+            <div class="hero-eyebrow">// educational security toolkit</div>
+            <h1>
+                Password Cracking<br>
+                <span class="gradient-text">& Credential Audit Suite</span>
+            </h1>
+            <p class="hero-sub">
+                A professional-grade platform for password policy testing, entropy analysis,
+                and credential security assessment — built for ethical security research.
+            </p>
+            <div class="typing-container">
+                <span id="typing-text"></span><span class="typing-cursor"></span>
             </div>
-            <div class="text-xs font-mono text-slate-500 tracking-widest uppercase mt-4 md:mt-0">
-                Offensive Security Suite v2.0
+        </section>
+
+        <!-- ═══ Stats ════════════════════════════════════════════════ -->
+        <div class="stat-row">
+            <div class="stat-item">
+                <div class="stat-num">5</div>
+                <div class="stat-label">Core Modules</div>
             </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-            <!-- Dictionary Generator -->
-            <div class="glass-panel p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Dictionary Forge</h2>
-                    <span
-                        class="text-xs font-mono text-[#00f0ff] border border-[#00f0ff] px-2 py-1 bg-[#00f0ff]/10">MODULE
-                        01</span>
-                </div>
-                <div class="space-y-5">
-                    <input type="text" id="dict-words" placeholder="Target basis (comma separated)"
-                        class="w-full rounded p-3 text-white">
-                    <button onclick="generateDict()" class="w-full btn-qylatrix py-3 rounded">Synthesize Logic</button>
-                    <div id="dict-result" class="hidden mt-4 terminal-output text-sm text-[#00f0ff]"></div>
-                </div>
+            <div class="stat-item">
+                <div class="stat-num">1M+</div>
+                <div class="stat-label">Mutations / sec</div>
             </div>
-
-            <!-- Strength Analyzer -->
-            <div class="glass-panel p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Entropy Analyzer</h2>
-                    <span
-                        class="text-xs font-mono text-[#00f0ff] border border-[#00f0ff] px-2 py-1 bg-[#00f0ff]/10">MODULE
-                        02</span>
-                </div>
-                <div class="space-y-5">
-                    <input type="password" id="analyze-pwd" placeholder="Input string for entropy evaluation"
-                        class="w-full rounded p-3 text-white">
-                    <button onclick="analyzePwd()" class="w-full btn-qylatrix py-3 rounded">Evaluate Hardness</button>
-                    <div id="analyze-result" class="hidden mt-4 space-y-3 terminal-output text-sm"></div>
-                </div>
+            <div class="stat-item">
+                <div class="stat-num">4</div>
+                <div class="stat-label">Hash Algorithms</div>
             </div>
-
-            <!-- Brute Force Simulator -->
-            <div class="glass-panel p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Brute-Force Matrices</h2>
-                    <span
-                        class="text-xs font-mono text-[#00f0ff] border border-[#00f0ff] px-2 py-1 bg-[#00f0ff]/10">MODULE
-                        03</span>
-                </div>
-                <div class="space-y-5">
-                    <input type="text" id="brute-pwd" placeholder="Hypothetical password structure"
-                        class="w-full rounded p-3 text-white">
-                    <button onclick="simulateBruteForce()" class="w-full btn-qylatrix py-3 rounded">Compute TTK</button>
-                    <div id="brute-result" class="hidden mt-4 terminal-output text-sm text-[#e2e8f0]"></div>
-                </div>
+            <div class="stat-item">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Ethical Use</div>
             </div>
-
-            <!-- Hash Extractor Sim -->
-            <div class="glass-panel p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold uppercase tracking-wider text-white">Hive Extraction</h2>
-                    <span
-                        class="text-xs font-mono text-[#00f0ff] border border-[#00f0ff] px-2 py-1 bg-[#00f0ff]/10">MODULE
-                        04</span>
-                </div>
-                <div class="space-y-5">
-                    <select id="os-type" class="w-full rounded p-3 text-white">
-                        <option value="linux">UNIX (/etc/shadow bypass)</option>
-                        <option value="windows">WIN (SAM/SYSTEM hive dump)</option>
-                    </select>
-                    <button onclick="extractHashes()" class="w-full btn-qylatrix py-3 rounded">Initiate
-                        Extraction</button>
-                    <div id="extract-result"
-                        class="hidden mt-4 terminal-output text-xs text-slate-400 overflow-x-auto whitespace-pre"></div>
-                </div>
-            </div>
-
-            <!-- Report Generator -->
-            <div class="glass-panel p-8 lg:col-span-2 border-t-4 border-t-[#0077ff]">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold uppercase tracking-wider text-white">Audit Report Generation</h2>
-                    <span
-                        class="text-xs font-mono text-[#00f0ff] border border-[#00f0ff] px-2 py-1 bg-[#00f0ff]/10">FINAL
-                        PHASE</span>
-                </div>
-                <div class="space-y-5">
-                    <textarea id="report-pwds" rows="4" placeholder="Input target payload strings (line separated)..."
-                        class="w-full rounded p-3 text-white"></textarea>
-                    <button onclick="generateReport()"
-                        class="w-full bg-[#0077ff] hover:bg-[#0055ff] border border-[#00f0ff] text-white font-bold py-4 rounded transition-colors uppercase tracking-widest shadow-[0_0_15px_rgba(0,119,255,0.4)]">Generate
-                        Executive Brief</button>
-                    <div id="report-result"
-                        class="hidden mt-6 p-8 bg-[#020617] rounded text-sm text-slate-300 border border-slate-800 prose prose-invert max-w-none font-mono">
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <footer class="text-center py-8 text-xs font-mono text-slate-600 uppercase border-t border-slate-800">
-            &copy; 2026 Qylatrix Industries. The Syntax of Safety.
-        </footer>
-    </div>
+        <!-- ═══ Module Grid ══════════════════════════════════════════ -->
+        <div class="section-label">Core Modules</div>
 
-    <!-- Scripts -->
+        <div class="grid" id="module-grid">
+
+            <!-- ── 01: Dictionary Forge ──────────────────────────── -->
+            <div class="card">
+                <div class="module-icon icon-blue">📖</div>
+                <div class="card-header">
+                    <div>
+                        <h2>Dictionary Forge</h2>
+                        <p class="desc">Generate intelligent wordlists using base words with advanced mutation
+                            algorithms — leet speak, case variations, appended suffixes.</p>
+                    </div>
+                    <span class="module-badge badge-blue">MOD 01</span>
+                </div>
+                <div class="field-group">
+                    <input type="text" id="dict-words" placeholder="alice, company2024, winter (comma separated)">
+                    <button class="btn btn-cyan" onclick="runGenerateDict(this)" id="btn-dict">
+                        <div class="spin"></div>
+                        <span class="btn-label">⚡ Synthesize Wordlist</span>
+                    </button>
+                    <div class="terminal" id="dict-result"></div>
+                </div>
+            </div>
+
+            <!-- ── 02: Entropy Analyzer ──────────────────────────── -->
+            <div class="card">
+                <div class="module-icon icon-purple">🔬</div>
+                <div class="card-header">
+                    <div>
+                        <h2>Entropy Analyzer</h2>
+                        <p class="desc">Evaluate password complexity, calculate Shannon entropy, zxcvbn score, and
+                            estimated time-to-crack with AI-backed recommendations.</p>
+                    </div>
+                    <span class="module-badge badge-purple">MOD 02</span>
+                </div>
+                <div class="field-group">
+                    <input type="password" id="analyze-pwd" placeholder="Enter password string...">
+                    <button class="btn btn-cyan" onclick="runAnalyze(this)"
+                        style="border-color: var(--accent-purple); color: var(--accent-purple);">
+                        <div class="spin"></div>
+                        <span class="btn-label">🔬 Evaluate Entropy</span>
+                    </button>
+                    <div class="terminal purple" id="analyze-result"></div>
+                </div>
+            </div>
+
+            <!-- ── 03: Brute Force Matrices ──────────────────────── -->
+            <div class="card">
+                <div class="module-icon icon-pink">⚡</div>
+                <div class="card-header">
+                    <div>
+                        <h2>Brute-Force Matrix</h2>
+                        <p class="desc">Model computational attack surface. Estimate time-to-compromise for a given
+                            password length and hash type against ASIC hardware arrays.</p>
+                    </div>
+                    <span class="module-badge badge-pink">MOD 03</span>
+                </div>
+                <div class="field-group">
+                    <input type="text" id="brute-pwd" placeholder="Hypothetical password string...">
+                    <button class="btn btn-cyan" onclick="runBruteForce(this)"
+                        style="border-color: var(--accent-pink); color: var(--accent-pink);">
+                        <div class="spin"></div>
+                        <span class="btn-label">⚡ Compute TTK</span>
+                    </button>
+                    <div class="terminal white" id="brute-result"></div>
+                </div>
+            </div>
+
+            <!-- ── 04: Hive Extraction ───────────────────────────── -->
+            <div class="card">
+                <div class="module-icon icon-green">🛡️</div>
+                <div class="card-header">
+                    <div>
+                        <h2>Hive Extraction</h2>
+                        <p class="desc">Simulate credential hash extraction from Linux <code
+                                style="color:var(--accent-green)">/etc/shadow</code> and Windows <code
+                                style="color:var(--accent-green)">SAM</code> hive dumps. Demonstrates how hashes are
+                            stored at system level.</p>
+                    </div>
+                    <span class="module-badge badge-green">MOD 04</span>
+                </div>
+                <div class="field-group">
+                    <select id="os-type">
+                        <option value="linux">🐧 UNIX — /etc/shadow bypass simulation</option>
+                        <option value="windows">🪟 WINDOWS — SAM / SYSTEM hive dump</option>
+                    </select>
+                    <button class="btn btn-cyan" onclick="runExtract(this)"
+                        style="border-color: var(--accent-green); color: var(--accent-green);">
+                        <div class="spin"></div>
+                        <span class="btn-label">🛡️ Initiate Extraction</span>
+                    </button>
+                    <div class="terminal green" id="extract-result"></div>
+                </div>
+            </div>
+
+            <!-- ── 05: Audit Report ──────────────────────────────── -->
+            <div class="card card-full">
+                <div class="module-icon icon-gold">📊</div>
+                <div class="card-header">
+                    <div>
+                        <h2>Audit Report Generator</h2>
+                        <p class="desc" style="max-width:640px;">Supply a list of passwords for a comprehensive policy
+                            audit. Generates a detailed executive security brief with scoring, entropy rankings, and
+                            remediation guidance.</p>
+                    </div>
+                    <span class="module-badge badge-gold">FINAL PHASE</span>
+                </div>
+                <div class="field-group">
+                    <textarea id="report-pwds" rows="5"
+                        placeholder="Enter passwords to audit (one per line):&#10;password123&#10;Admin@2024!&#10;correct horse battery staple&#10;P@55w0rd!"></textarea>
+                    <button class="btn btn-primary" onclick="runReport(this)">
+                        <div class="spin"></div>
+                        <span class="btn-label">📊 Generate Executive Brief</span>
+                    </button>
+                    <div class="terminal white" id="report-result"
+                        style="font-size:13px; padding:28px; max-height:600px; overflow-y:auto;"></div>
+                </div>
+            </div>
+
+        </div><!-- /grid -->
+
+        <footer>
+            &copy; 2026 Qylatrix Industries &nbsp;|&nbsp; The Syntax of Safety &nbsp;|&nbsp;
+            <a href="https://github.com/Qylatrix/qylatrix-offensive-suite" target="_blank">GitHub</a>
+            &nbsp;|&nbsp; Educational Use Only
+        </footer>
+
+    </div><!-- /page-wrap -->
+
+
+    <!-- ═══ Scripts ══════════════════════════════════════════════════ -->
     <script>
+        /* ─────────────────── Canvas Neural Network Animation ─────── */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let W, H, nodes = [], animId;
+
+        const COLORS = {
+            node: ['rgba(0,200,255,', 'rgba(123,47,255,', 'rgba(0,128,255,'],
+            edge: 'rgba(0,200,255,'
+        };
+
+        class Node {
+            constructor() { this.reset(true); }
+            reset(init = false) {
+                this.x = Math.random() * W;
+                this.y = init ? Math.random() * H : -20;
+                this.r = Math.random() * 1.8 + 0.8;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = Math.random() * 0.35 + 0.05;
+                this.alpha = Math.random() * 0.7 + 0.3;
+                this.pulse = Math.random() * Math.PI * 2;
+                this.colorIdx = Math.floor(Math.random() * COLORS.node.length);
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.pulse += 0.018;
+                const pa = this.alpha + Math.sin(this.pulse) * 0.15;
+                if (this.y > H + 30) this.reset();
+                if (this.x < -10 || this.x > W + 10) this.vx *= -1;
+                return pa;
+            }
+            draw() {
+                const pa = this.update();
+                const col = COLORS.node[this.colorIdx] + pa.toFixed(2) + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.r + Math.sin(this.pulse) * 0.5, 0, Math.PI * 2);
+                ctx.fillStyle = col;
+                ctx.shadowColor = col;
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function drawEdges() {
+            const dist = 130;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < dist) {
+                        const a = (1 - d / dist) * 0.22;
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = COLORS.edge + a.toFixed(3) + ')';
+                        ctx.lineWidth = 0.7;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        /* Moving hex grid overlay */
+        let hexOffset = 0;
+        function drawHexGrid() {
+            hexOffset += 0.15;
+            const size = 48, rows = Math.ceil(H / (size * 1.73)) + 2, cols = Math.ceil(W / (size * 2)) + 2;
+            ctx.strokeStyle = 'rgba(0,200,255,0.028)';
+            ctx.lineWidth = 0.8;
+            for (let row = -1; row < rows; row++) {
+                for (let col = -1; col < cols; col++) {
+                    const cx = col * size * 1.75 + (row % 2 === 0 ? 0 : size * 0.875);
+                    const cy = row * size * 1.52 + (hexOffset % (size * 1.52));
+                    ctx.beginPath();
+                    for (let i = 0; i < 6; i++) {
+                        const a = (Math.PI / 3) * i - Math.PI / 6;
+                        const px = cx + size * Math.cos(a);
+                        const py = cy + size * Math.sin(a);
+                        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+        }
+
+        /* Scan line */
+        let scanY = 0;
+        function drawScanLine() {
+            scanY = (scanY + 0.8) % (H + 60);
+            const grad = ctx.createLinearGradient(0, scanY - 40, 0, scanY + 10);
+            grad.addColorStop(0, 'rgba(0,200,255,0)');
+            grad.addColorStop(0.5, 'rgba(0,200,255,0.04)');
+            grad.addColorStop(1, 'rgba(0,200,255,0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, scanY - 40, W, 50);
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, W, H);
+
+            /* deep gradient background */
+            const bg = ctx.createRadialGradient(W * 0.3, H * 0.4, 0, W * 0.5, H * 0.5, W * 0.85);
+            bg.addColorStop(0, '#060d1f');
+            bg.addColorStop(0.5, '#040a18');
+            bg.addColorStop(1, '#020810');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, W, H);
+
+            /* accent glows */
+            const g1 = ctx.createRadialGradient(W * 0.15, H * 0.3, 0, W * 0.15, H * 0.3, W * 0.3);
+            g1.addColorStop(0, 'rgba(0,128,255,0.07)');
+            g1.addColorStop(1, 'transparent');
+            ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
+
+            const g2 = ctx.createRadialGradient(W * 0.85, H * 0.6, 0, W * 0.85, H * 0.6, W * 0.35);
+            g2.addColorStop(0, 'rgba(123,47,255,0.07)');
+            g2.addColorStop(1, 'transparent');
+            ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+
+            drawHexGrid();
+            drawEdges();
+            nodes.forEach(n => n.draw());
+            drawScanLine();
+            animId = requestAnimationFrame(animate);
+        }
+
+        function initCanvas() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+            nodes = Array.from({ length: 120 }, () => new Node());
+            if (animId) cancelAnimationFrame(animId);
+            animate();
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+
+
+        /* ─────────────────── Typing Effect ────────────────────────── */
+        const lines = [
+            '> Initializing offensive toolkit...',
+            '> Loading mutation algorithms...',
+            '> Standing by for credential audit...',
+            '> All modules operational.',
+        ];
+        let lineIdx = 0, charIdx = 0;
+        const typEl = document.getElementById('typing-text');
+
+        function typeNext() {
+            if (charIdx < lines[lineIdx].length) {
+                typEl.textContent += lines[lineIdx][charIdx++];
+                setTimeout(typeNext, 35);
+            } else {
+                setTimeout(() => {
+                    typEl.textContent = '';
+                    charIdx = 0;
+                    lineIdx = (lineIdx + 1) % lines.length;
+                    typeNext();
+                }, 2800);
+            }
+        }
+        typeNext();
+
+
+        /* ─────────────────── API Helpers ───────────────────────────── */
         async function fetchAPI(endpoint, payload) {
             const res = await fetch(endpoint, {
                 method: 'POST',
@@ -345,82 +1069,139 @@
             return res.json();
         }
 
-        async function generateDict() {
-            const words = document.getElementById('dict-words').value.split(',').map(w => w.trim()).filter(Boolean);
-            if (words.length === 0) return;
-            const res = await fetchAPI('/api/generate_dict', { words });
-            const div = document.getElementById('dict-result');
-            div.innerHTML = `> Executing mutation algorithms...<br>> ${res.count} permutations mapped.<br>> Output routed to: <span class="text-white">${res.file}</span>`;
-            div.classList.remove('hidden');
+        function setLoading(btn, on) {
+            btn.classList.toggle('loading', on);
+            btn.disabled = on;
         }
 
-        async function analyzePwd() {
+        function showTerminal(id) {
+            const el = document.getElementById(id);
+            el.style.display = 'block';
+            return el;
+        }
+
+
+        /* ─────────────────── Module Functions ──────────────────────── */
+
+        async function runGenerateDict(btn) {
+            const raw = document.getElementById('dict-words').value;
+            const words = raw.split(',').map(w => w.trim()).filter(Boolean);
+            if (!words.length) { alert('Enter at least one base word.'); return; }
+
+            setLoading(btn, true);
+            try {
+                const res = await fetchAPI('/api/generate_dict', { words });
+                const el = showTerminal('dict-result');
+                el.innerHTML =
+                    `<span style="color:var(--text-muted)">&gt; Applying L33tspeak, CamelCase, digit-suffix mutations...</span><br>` +
+                    `<span style="color:var(--text-muted)">&gt; Running combinatorial expansion on [${words.join(', ')}]...</span><br><br>` +
+                    `<span style="color:#00ff9d">✓ ${res.count.toLocaleString()} unique permutations generated.</span><br>` +
+                    `<span style="color:var(--text-muted)">&gt; Output saved → </span><span style="color:#fff">${res.file}</span>`;
+            } catch (e) {
+                showTerminal('dict-result').textContent = '> ERROR: Request failed.';
+            }
+            setLoading(btn, false);
+        }
+
+        async function runAnalyze(btn) {
             const password = document.getElementById('analyze-pwd').value;
-            if (!password) return;
-            const data = await fetchAPI('/api/analyze', { password });
-            const div = document.getElementById('analyze-result');
-            let recs = data.recommendations.map(r => `<li>[-] ${r}</li>`).join('');
+            if (!password) { alert('Enter a password to analyze.'); return; }
 
-            // Re-map colors to cyan/blue
-            let color = data.result.score > 2 ? 'text-[#00f0ff]' : 'text-[#ff4444]'; // Kept red only for actual danger indication, else cyan
+            setLoading(btn, true);
+            try {
+                const data = await fetchAPI('/api/analyze', { password });
+                const el = showTerminal('analyze-result');
+                const r = data.result;
+                const score = r.score || 0;
+                const pct = (score / 4) * 100;
+                const clr = score <= 1 ? '#ff4466' : score === 2 ? '#ffaa00' : score === 3 ? '#00c8ff' : '#00ff9d';
+                const label = ['CRITICAL', 'WEAK', 'FAIR', 'STRONG', 'VERY STRONG'][score] || 'UNKNOWN';
 
-            div.innerHTML = `
-                <div class="flex justify-between border-b border-slate-800 pb-2">
-                    <span class="text-slate-500">THREAT SCORE:</span>
-                    <span class="${color} font-bold">[ ${data.result.score} / 4 ]</span>
-                </div>
-                <div class="flex justify-between border-b border-slate-800 py-2">
-                    <span class="text-slate-500">ENTROPY VALUE:</span>
-                    <span class="text-white">${data.result.math_entropy_bits.toFixed(1)} bits</span>
-                </div>
-                <div class="flex justify-between py-2">
-                    <span class="text-slate-500">EST. COMPROMISE TIME:</span>
-                    <span class="text-white">${data.result.crack_times_display.offline_fast_hashing_1e10_per_second || 'Unknown'}</span>
-                </div>
-                ${recs ? `<div class="mt-4 text-slate-400 border-t border-slate-800 pt-2 font-mono text-xs">VULNERABILITY PATCH NOTES:<ul class="mt-2 space-y-1">${recs}</ul></div>` : ''}
-            `;
-            div.classList.remove('hidden');
+                let recs = (data.recommendations || []).map(r => `<div style="margin-top:4px;color:var(--text-muted)">  [-] ${r}</div>`).join('');
+
+                el.innerHTML = `
+<div style="display:flex;justify-content:space-between;margin-bottom:8px">
+  <span style="color:var(--text-muted)">STRENGTH RATING:</span>
+  <span style="color:${clr};font-weight:700">${label} [${score}/4]</span>
+</div>
+<div class="score-bar"><div class="score-fill" style="width:${pct}%;background:${clr}"></div></div>
+<div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06)">
+  <span style="color:var(--text-muted)">ENTROPY:</span>
+  <span style="color:#fff">${(r.math_entropy_bits || 0).toFixed(1)} bits</span>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:4px">
+  <span style="color:var(--text-muted)">CRACK TIME (ASIC):</span>
+  <span style="color:#fff">${r.crack_times_display?.offline_fast_hashing_1e10_per_second || '—'}</span>
+</div>
+${recs ? `<div style="margin-top:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;font-size:11px;letter-spacing:1px">RECOMMENDATIONS:${recs}</div>` : ''}`;
+            } catch (e) {
+                showTerminal('analyze-result').textContent = '> ERROR: Analysis failed.';
+            }
+            setLoading(btn, false);
         }
 
-        async function simulateBruteForce() {
+        async function runBruteForce(btn) {
             const password = document.getElementById('brute-pwd').value;
-            if (!password) return;
-            const data = await fetchAPI('/api/brute_force', { password, hash_type: 'ntlm' });
-            const div = document.getElementById('brute-result');
-            div.innerHTML = `> Matrix size: ${data.combinations.toLocaleString()}<br>> Hardware acceleration: ${data.assumed_hash_rate.toLocaleString()} H/s (ASIC Array)<br>> TIME-TO-CRACK (TTC): <span class="text-[#00f0ff] font-bold text-lg">${data.formatted_time}</span>`;
-            div.classList.remove('hidden');
+            if (!password) { alert('Enter a password to simulate.'); return; }
+
+            setLoading(btn, true);
+            try {
+                const data = await fetchAPI('/api/brute_force', { password, hash_type: 'ntlm' });
+                const el = showTerminal('brute-result');
+                el.innerHTML =
+                    `<span style="color:var(--text-muted)">&gt; Modeling ASIC/GPU parallel attack array...</span><br>` +
+                    `<span style="color:var(--text-muted)">&gt; Keyspace: </span><span style="color:#fff">${(data.combinations || 0).toLocaleString()}</span> combinations<br>` +
+                    `<span style="color:var(--text-muted)">&gt; Hash rate: </span><span style="color:#fff">${(data.assumed_hash_rate || 0).toLocaleString()} H/s</span><br><br>` +
+                    `<span style="color:var(--text-muted)">&gt; TIME TO CRACK: </span><span style="color:var(--accent-pink);font-size:16px;font-weight:700">${data.formatted_time}</span>`;
+            } catch (e) {
+                showTerminal('brute-result').textContent = '> ERROR: Simulation failed.';
+            }
+            setLoading(btn, false);
         }
 
-        async function extractHashes() {
+        async function runExtract(btn) {
             const os_type = document.getElementById('os-type').value;
-            const data = await fetchAPI('/api/extract', { os_type });
-            const div = document.getElementById('extract-result');
-            div.textContent = `> Bypassing Kernel protections...\n> Dumping memory hives...\n\n` + JSON.stringify(data.accounts, null, 2);
-            div.classList.remove('hidden');
+            setLoading(btn, true);
+            try {
+                const data = await fetchAPI('/api/extract', { os_type });
+                const el = showTerminal('extract-result');
+                const header = os_type === 'linux'
+                    ? '> Simulating /etc/shadow bypass...\n> Parsing shadow file entries...\n\n'
+                    : '> Simulating SAM/SYSTEM hive dump...\n> Parsing NTLM credential records...\n\n';
+                el.textContent = header + JSON.stringify(data.accounts, null, 2);
+            } catch (e) {
+                showTerminal('extract-result').textContent = '> ERROR: Extraction failed.';
+            }
+            setLoading(btn, false);
         }
 
-        async function generateReport() {
+        async function runReport(btn) {
             const lines = document.getElementById('report-pwds').value.split('\n').map(w => w.trim()).filter(Boolean);
-            if (lines.length === 0) return;
-            const data = await fetchAPI('/api/report', { passwords: lines });
-            const div = document.getElementById('report-result');
+            if (!lines.length) { alert('Enter at least one password.'); return; }
 
-            let html = data.markdown
-                .replace(/^# (.*)/gm, '<h1 class="text-2xl font-bold mb-6 text-white uppercase border-b border-[#00f0ff] pb-2">$1</h1>')
-                .replace(/^## (.*)/gm, '<h2 class="text-lg font-bold mt-8 mb-4 text-[#0077ff] uppercase tracking-widest">$1</h2>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
-                .replace(/`(.*?)`/g, '<code class="bg-slate-900 border border-slate-800 text-[#00f0ff] px-1 rounded">$1</code>')
-                .replace(/\n\n/g, '<br><br>')
-                .replace(/^- (.*)/gm, '<li class="ml-4 text-slate-400 mb-1">$1</li>')
-                .replace(/\|(.*)\|/g, function (match) {
-                    // Simple table formatting
-                    return `<div class="py-1 border-b border-slate-800 text-xs">${match.replace(/\|/g, '<span class="mx-2 text-slate-700">|</span>')}</div>`;
-                });
+            setLoading(btn, true);
+            try {
+                const data = await fetchAPI('/api/report', { passwords: lines });
+                const el = showTerminal('report-result');
 
-            div.innerHTML = html;
-            div.classList.remove('hidden');
+                let html = data.markdown
+                    .replace(/^# (.*)/gm, '<h1 style="font-size:1.4rem;font-weight:700;color:#fff;border-bottom:1px solid rgba(0,200,255,0.2);padding-bottom:10px;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px">$1</h1>')
+                    .replace(/^## (.*)/gm, '<h2 style="font-size:1rem;font-weight:700;color:var(--accent-cyan);margin-top:24px;margin-bottom:10px;letter-spacing:2px;text-transform:uppercase">$1</h2>')
+                    .replace(/^### (.*)/gm, '<h3 style="font-size:0.85rem;font-weight:700;color:var(--accent-purple);margin-top:16px;margin-bottom:8px">$1</h3>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#fff">$1</strong>')
+                    .replace(/`(.*?)`/g, '<code style="background:rgba(0,0,0,0.4);border:1px solid rgba(0,200,255,0.2);color:var(--accent-cyan);padding:1px 6px;border-radius:4px;font-size:11px">$1</code>')
+                    .replace(/\n\n/g, '<br><br>')
+                    .replace(/^- (.*)/gm, '<div style="padding-left:12px;color:var(--text-muted);margin:3px 0">• $1</div>')
+                    .replace(/^\| .*/gm, m => `<div style="font-size:11px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-family:var(--font-mono)">${m}</div>`);
+
+                el.innerHTML = html;
+            } catch (e) {
+                showTerminal('report-result').textContent = '> ERROR: Report generation failed.';
+            }
+            setLoading(btn, false);
         }
     </script>
+
 </body>
 
 </html>

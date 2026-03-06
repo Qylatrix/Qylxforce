@@ -1,0 +1,40 @@
+# ── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual Environments ────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── Environment variables ───────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── IDE / OS ────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Test / Generated output ─────────────────────────────────────
+test_shadow.txt
+test_sam.txt
+password_audit_report_*.md
+download_wordlist.txt
+*.log
+
+# ── Flask session / cache ───────────────────────────────────────
+instance/
+.webassets-cache
