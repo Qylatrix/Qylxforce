@@ -61,7 +61,7 @@ else
 fi
 
 echo -e "  ${CYAN}[*]${NC} Setting up Python environment..."
-python3 -m venv "$INSTALL_DIR/.venv" --quiet
+python3 -m venv "$INSTALL_DIR/.venv"
 # shellcheck source=/dev/null
 source "$INSTALL_DIR/.venv/bin/activate"
 pip install --quiet -r "$INSTALL_DIR/requirements.txt"
